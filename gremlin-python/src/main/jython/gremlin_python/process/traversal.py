@@ -16,7 +16,8 @@ KIND, either express or implied.  See the License for the
 specific language governing permissions and limitations
 under the License.
 '''
-from abc import abstractmethod
+import abc
+import six
 from aenum import Enum
 from .. import statics
 
@@ -276,7 +277,6 @@ class TraversalStrategies(object):
 
     def __init__(self, traversal_strategies=None):
         self.traversal_strategies = traversal_strategies.traversal_strategies if traversal_strategies is not None else []
-        return
 
     def add_strategies(self, traversal_strategies):
         self.traversal_strategies = self.traversal_strategies + traversal_strategies
@@ -284,11 +284,11 @@ class TraversalStrategies(object):
     def apply_strategies(self, traversal):
         for traversal_strategy in self.traversal_strategies:
             traversal_strategy.apply(traversal)
-        return
 
 
+@six.add_metaclass(abc.ABCMeta)
 class TraversalStrategy(object):
-    @abstractmethod
+    @abc.abstractmethod
     def apply(self, traversal):
         return
 
@@ -310,14 +310,12 @@ class Bytecode(object):
         for arg in args:
             newArgs = newArgs + (self.__convertArgument(arg),)
         self.source_instructions.append((source_name, newArgs))
-        return
 
     def add_step(self, step_name, *args):
         newArgs = ()
         for arg in args:
             newArgs = newArgs + (self.__convertArgument(arg),)
         self.step_instructions.append((step_name, newArgs))
-        return
 
     def __convertArgument(self,arg):
         if isinstance(arg, Traversal):
@@ -347,4 +345,3 @@ class Binding(object):
     def __init__(self,variable,value):
         self.variable = variable
         self.value = value
-
