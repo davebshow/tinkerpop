@@ -290,7 +290,7 @@ class TraversalStrategies(object):
 class TraversalStrategy(object):
     @abc.abstractmethod
     def apply(self, traversal):
-        return
+        raise NotImplementedError
 
 '''
 BYTECODE
@@ -345,3 +345,4 @@ class Binding(object):
     def __init__(self,variable,value):
         self.variable = variable
         self.value = value
+
